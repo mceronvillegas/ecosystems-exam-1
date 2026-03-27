@@ -9,7 +9,7 @@ export type User = {
     username: string;
     password: string;
     email: string;
-    role: UserRole;
+    role: UserRole; // esto es para 
 };
 
 export interface CreateUserDTO { //crear un tipado especifico solo para la creacion de usuarios

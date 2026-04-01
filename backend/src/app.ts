@@ -6,18 +6,18 @@ import { errorsMiddleware } from "./middlewares/errorsMiddleware.js";
 
 //Express config
 const app = express();
-app.use(express.json) //Las respuestas van a pasar a ser un json.
+app.use(express.json()) //Las respuestas van a pasar a ser un json.
 app.use(cors());
 
 //feature routes
 app.use('/api/auth', authRouter); // todas las rutas definidas dentro de apiRouter solo se activarán si la URL comienza con /api.
 
-app.use(errorsMiddleware) // funcion de express para usar
-
 // Main route
 app.get("/", (req, res) => {
     res.send("Hello, World!. This server is up");
 });
+
+app.use(errorsMiddleware) // funcion de express para usar
 
 //app env
 if (NODE_ENV !== "production") { // Si el env de node no es produccion, entonces correra en el puerto propuesto en la confug del index.ts

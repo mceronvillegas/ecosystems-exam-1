@@ -1,47 +1,43 @@
 export enum OrderStatus {
-    // pedido en estado inicial
+    // estado inicial
     PENDING = "pending",
     // estado en la tienda
     DECLINED = "declined",
     ACCEPTED = "accepted",
-    //repartidores
+    // repartidores
     PICKED = "picked",
     ARRIVED = "arrived"
 }
 
-export type OrderProduct = { //solamente van las caracteristicas de lo que es el producto
+export type OrderProduct = {
     id: number;
     orderId: number;
     quantity: number;
     productId: number;
 }
 
-export type order = { 
-    id: number,
-
+// Cambiado a mayúscula inicial (Convención de Typescript)
+export type Order = { 
+    id: number;
     status: OrderStatus;
-
     totalPrice: number;
-
     orderDetail: string;
-    adress: string;
-    
-    consumerId: number;
+    address: string; // Corregido: address
+    consumerId: string; // Corregido: string porque es un UUID
     storeId: number;
-    deliveryId?: string | null; //Este item es asignado despues de que se hace la orden
-
-    products?: OrderProduct[]; //los corchetes son  
+    deliveryId?: string | null;
+    products?: OrderProduct[];
     paymentMethod: string;
 }
 
 export interface CreateOrderDTO {
-    orderId: number;
-    adress: string;
+    // orderId eliminado (lo genera la DB)
+    storeId: number; // Añadido: vital saber a qué tienda se le pide
+    address: string; // Corregido: address
     paymentMethod: string;
     orderDetail: string;
     totalPrice: number;
-
-    Products: {
+    products: { // Corregido: minúscula
         productId: number;
         quantity: number;
     }[];

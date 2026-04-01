@@ -4,9 +4,8 @@ import { supabase } from "../../config/supabase.js";
 import Boom from "@hapi/boom";
 import { UserRole } from "./auth.types.js";
 
-//autenticacion del usuario
-export const authenticateUserService = async (credentials: AuthenticateUserDTO 
-): Promise<AuthTokenResponsePassword['data']> => { //libreria de supabase
+// Autenticación del usuario
+export const authenticateUserService = async (credentials: AuthenticateUserDTO): Promise<AuthTokenResponsePassword['data']> => {
     const signInRes = await supabase.auth.signInWithPassword({
         email: credentials.email,
         password: credentials.password,
@@ -14,20 +13,19 @@ export const authenticateUserService = async (credentials: AuthenticateUserDTO
 
     if (signInRes.error) {
         throw Boom.unauthorized(
-            signInRes.error.message + ", the credentials does not match any user."
+            signInRes.error.message + ", the credentials do not match any user."
         );
     }
 
     return signInRes.data;
 };
 
-//creacion de usuario
-export const createUserService = async (user: CreateUserDTO
-): Promise<AuthResponse['data']> => {
-    // Llama al método de Supabase para registrar al usuario y espera la respuesta
+// Creación de usuario
+export const createUserService = async (user: CreateUserDTO): Promise<AuthResponse['data']> => {
+    // 1. Registro en Supabase Auth
     const signUpRes = await supabase.auth.signUp({
-        email: user.email, // Credencial obligatoria: correo
-        password: user.password, // Credencial obligatoria: contraseña
+        email: user.email,
+        password: user.password,
         options: {
             data: {
                 username: user.username,
@@ -35,38 +33,40 @@ export const createUserService = async (user: CreateUserDTO
             },
         },
     });
-    // Verifica si la respuesta de Supabase contiene algún error
+
     if (signUpRes.error) {
-        // Interrumpe el flujo y lanza un error HTTP 400 (Bad Request) usando Boom
         throw Boom.badRequest(
             signUpRes.error.message + ', the user could not be created'
         );
     }
 
-    //id del nuevo usuario
-    const newUserId = signUpRes.data.user?.id; //si existe un usuario entonces que nos de el id alternativo de supabase
+    const newUserId = signUpRes.data.user?.id;
+
     if (newUserId) {
-        const { error: insertionError } = await supabase.from('users').insert([ // ese from users es insertar el nombre de la tabla que tenemos en supabase
+        // 2. Inserción en la tabla pública de usuarios (CORREGIDO: username)
+        const { error: insertionError } = await supabase.from('users').insert([
             {
                 id: newUserId,
                 email: user.email,
-                name: user.username,
+                username: user.username, // Antes decía name
                 role: user.role,
             },
         ]);
 
         if (insertionError) {
             throw Boom.internal(
-                'The user profile could not be created' + insertionError.message
+                'The user profile could not be created. ' + insertionError.message
             );
         }
 
+        // 3. Creación de la tienda si aplica (CORREGIDO: store_name y description)
         if (user.role === UserRole.STORE && user.storeName) {
             const { error: storeError } = await supabase.from('stores').insert([
                 {
-                    name: user.storeName,
+                    store_name: user.storeName, // Antes decía name
                     owner_id: newUserId,
                     status: 'closed',
+                    description: 'Descripción pendiente', // Agregamos el NOT NULL requerido
                 },
             ]);
 
@@ -76,12 +76,7 @@ export const createUserService = async (user: CreateUserDTO
                 );
             }
         }
-
-
     }
 
-
-    // Si no hubo errores, retorna la información (data) del nuevo usuario
     return signUpRes.data;
 };
-

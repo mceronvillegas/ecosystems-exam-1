@@ -5,9 +5,8 @@ export enum UserRole { // te deja enumerar una serie de constantes que tendran u
 }
 
 export type User = {
-    id: number;
+    id: string;
     username: string;
-    password: string;
     email: string;
     role: UserRole; 
 };

@@ -1,12 +1,12 @@
 import Boom from "@hapi/boom";
-import type { Request, Response, NextFunction } from "express"; // <-- Agregamos NextFunction
+import type { Request, Response, NextFunction } from "express"; 
 import { authenticateUserService, createUserService } from "./auth.service.js";
 import { UserRole } from "./auth.types.js";
 
 export const authenticateUserController = async (
     req: Request,
     res: Response,
-    next: NextFunction // <-- Recibimos next
+    next: NextFunction
 ) => {
     try {
         if (!req.body) {
@@ -24,16 +24,16 @@ export const authenticateUserController = async (
         }
 
         const user = await authenticateUserService({ email, password });
-        res.json(user); // <-- No es necesario el return, res.json ya termina el ciclo
-    } catch (error) {
-        next(error); // <-- Si algo falla, se lo pasamos a tu errorsMiddleware
+        res.json(user); 
+        } catch (error) {
+        next(error); // si algo falla se le pasa a errors middleware
     }
 };
 
 export const createUserController = async (
     req: Request,
     res: Response,
-    next: NextFunction // <-- Recibimos next
+    next: NextFunction 
 ) => {
     try {
         if (!req.body) {
@@ -67,11 +67,11 @@ export const createUserController = async (
             username,
             password,
             role,
-            storeName, // <-- ¡Añadido! Ahora sí llegará a tu servicio
+            storeName, 
         });
 
         res.status(201).json(user);
     } catch (error) {
-        next(error); // <-- Atrapamos cualquier error de validación o de base de datos
-    }
-};
+        next(error); 
+        }
+}

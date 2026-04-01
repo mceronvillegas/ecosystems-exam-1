@@ -16,14 +16,13 @@ export type OrderProduct = {
     productId: number;
 }
 
-// Cambiado a mayúscula inicial (Convención de Typescript)
 export type Order = { 
     id: number;
     status: OrderStatus;
     totalPrice: number;
     orderDetail: string;
-    address: string; // Corregido: address
-    consumerId: string; // Corregido: string porque es un UUID
+    address: string; 
+    consumerId: string; 
     storeId: number;
     deliveryId?: string | null;
     products?: OrderProduct[];
@@ -32,12 +31,12 @@ export type Order = {
 
 export interface CreateOrderDTO {
     // orderId eliminado (lo genera la DB)
-    storeId: number; // Añadido: vital saber a qué tienda se le pide
-    address: string; // Corregido: address
+    storeId: number; //  a qué tienda se le pide
+    address: string; 
     paymentMethod: string;
     orderDetail: string;
     totalPrice: number;
-    products: { // Corregido: minúscula
+    products: { 
         productId: number;
         quantity: number;
     }[];

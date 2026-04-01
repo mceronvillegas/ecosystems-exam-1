@@ -7,7 +7,7 @@ import {
     getOrdersService,
     updateOrderService,
 } from './order.service.js';
-// Asegúrate de que la ruta apunte correctamente a donde guardaste tu authMiddleware
+
 import type { AuthenticatedRequest} from '../../middlewares/authMiddleware.js';
 import { getUserFromRequest } from '../../middlewares/authMiddleware.js';
 
@@ -18,7 +18,6 @@ export const getOrdersController = async (
 ) => {
     try {
         const user = getUserFromRequest(req);
-        // En Supabase, el rol que le pasamos al registrarse se guarda en user_metadata
         const role = user.user_metadata?.role as string;
 
         const orders = await getOrdersService(user.id, role);
@@ -34,14 +33,9 @@ export const getOrderByIdController = async (
     next: NextFunction
 ) => {
     try {
-        const id = Number(req.params.id);
+        const { id } = req.params;
 
-        // Validamos que el ID no sea un texto raro (ej. /api/orders/hola)
-        if (isNaN(id)) {
-            throw Boom.badRequest('Order ID must be a valid number');
-        }
-
-        const order = await getOrderByIdService(id);
+        const order = await getOrderByIdService(Number(id));
         return res.json(order);
     } catch (error) {
         next(error);
@@ -60,7 +54,6 @@ export const createOrderController = async (
             throw Boom.badRequest('Request body is required');
         }
 
-        // Extraemos TUS columnas reales
         const { storeId, address, paymentMethod, totalPrice, products } = req.body;
 
         // Validaciones
@@ -69,7 +62,7 @@ export const createOrderController = async (
         if (paymentMethod === undefined) throw Boom.badRequest('Payment method is required');
         if (totalPrice === undefined) throw Boom.badRequest('Total price is required');
 
-        // Validamos que haya un arreglo de productos y no esté vacío
+        // Arreglo de productos y no esté vacío
         if (!products || !Array.isArray(products) || products.length === 0) {
             throw Boom.badRequest('At least one product is required');
         }
@@ -91,9 +84,7 @@ export const updateOrderController = async (
             throw Boom.badRequest('Request body is required');
         }
 
-        const id = Number(req.params.id);
-        if (isNaN(id)) throw Boom.badRequest('Order ID must be a valid number');
-
+        const { id } = req.params;
         const { status, deliveryId } = req.body;
 
         const updateOrder = await updateOrderService(
@@ -101,7 +92,7 @@ export const updateOrderController = async (
                 status,
                 deliveryId,
             },
-            id
+            Number(id)
         );
         return res.json(updateOrder);
     } catch (error) {
@@ -116,10 +107,9 @@ export const deleteOrderController = async (
 ) => {
     try {
         const user = getUserFromRequest(req);
-        const id = Number(req.params.id);
-        if (isNaN(id)) throw Boom.badRequest('Order ID must be a valid number');
+        const { id } = req.params;
 
-        await deleteOrderService(id, user.id);
+        await deleteOrderService(Number(id), user.id);
 
         // El status 204 (No Content) es el estándar REST para decir "se borró bien, no hay nada más que mostrar"
         return res.status(204).send();

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import Boom from '@hapi/boom';
-import { supabase } from '../config/supabase.js'; // <-- Ojo: agregué el .js al final
+import { supabase } from '../config/supabase.js'; 
 import type { AuthUser } from '@supabase/supabase-js';
 
 // 1. Extendemos el Request para que acepte al usuario
@@ -15,7 +15,6 @@ export const getUserFromRequest = (req: AuthenticatedRequest): AuthUser => {
     throw Boom.unauthorized('User not authenticated');
 };
 
-// 2. El Guardia de Seguridad (Añadimos try/catch)
 export const authMiddleware = async (
     req: AuthenticatedRequest,
     res: Response,
@@ -26,34 +25,30 @@ export const authMiddleware = async (
             throw Boom.unauthorized('Authorization header is missing');
         }
 
-        // Extraemos el token del formato "Bearer <token>"
         const token = req.headers.authorization.split(' ')[1];
 
         if (!token) {
             throw Boom.unauthorized('Token is missing');
         }
 
-        // Validamos con Supabase
         const userResponse = await supabase.auth.getUser(token);
 
         if (userResponse.error) {
             throw Boom.unauthorized(userResponse.error.message);
         }
 
-        // Le ponemos el gafete al request
         req.user = userResponse.data.user;
-        next(); // ¡Pásale!
+        next(); 
     } catch (error) {
-        next(error); // Lo mandamos a tu errorsMiddleware
+        next(error); 
     }
 };
 
-// 3. El validador de roles (Este no necesita try/catch porque no es asíncrono)
+
 export const checkRole = (allowedRoles: string[]) => {
     return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         const user = req.user;
 
-        // Extraemos el rol que guardamos en data al momento del registro
         const userRole = user?.user_metadata?.role;
 
         if (userRole === undefined || !allowedRoles.includes(userRole)) {

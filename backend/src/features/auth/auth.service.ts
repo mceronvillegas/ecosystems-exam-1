@@ -43,7 +43,7 @@ export const createUserService = async (user: CreateUserDTO): Promise<AuthRespon
     const newUserId = signUpRes.data.user?.id;
 
     if (newUserId) {
-        // 2. Inserción en la tabla pública de usuarios (CORREGIDO: username)
+        // 2. Inserción en la tabla pública de usuarios 
         const { error: insertionError } = await supabase.from('users').insert([
             {
                 id: newUserId,
@@ -59,14 +59,14 @@ export const createUserService = async (user: CreateUserDTO): Promise<AuthRespon
             );
         }
 
-        // 3. Creación de la tienda si aplica (CORREGIDO: store_name y description)
+        // 3. Creación de la tienda si aplica 
         if (user.role === UserRole.STORE && user.storeName) {
             const { error: storeError } = await supabase.from('stores').insert([
                 {
                     store_name: user.storeName, // Antes decía name
                     owner_id: newUserId,
                     status: 'closed',
-                    description: 'Descripción pendiente', // Agregamos el NOT NULL requerido
+                    description: 'Descripción pendiente', 
                 },
             ]);
 

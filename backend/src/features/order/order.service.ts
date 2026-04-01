@@ -101,10 +101,10 @@ export const updateOrderService = async (
     orderUpdate: UpdateOrderStatusDTO,
     orderId: number
 ): Promise<Order> => {
-    // Primero verificamos que exista
+    // existe?
     const orderFound = await getOrderByIdService(orderId);
 
-    // Si no mandan un dato nuevo, conservamos el que ya tenía
+    // Si no mandan un dato nuevo, se conserva el existente
     const status = orderUpdate.status === undefined ? orderFound.status : orderUpdate.status;
     const deliveryId = orderUpdate.deliveryId === undefined ? orderFound.deliveryId : orderUpdate.deliveryId;
 
@@ -137,11 +137,11 @@ export const deleteOrderService = async (
         );
     }
 
-    // Eliminamos primero los productos por la Foreign Key
+    // Eliminar primero los productos por la Foreign Key
     await pool.query('DELETE FROM order_products WHERE order_id = $1', [
         orderFound.id,
     ]);
 
-    // Eliminamos la orden
+    // Eliminar la orden
     await pool.query('DELETE FROM orders WHERE id = $1', [orderFound.id]);
 };

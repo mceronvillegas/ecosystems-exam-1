@@ -17,6 +17,7 @@ export interface CreateUserDTO { //crear un tipado especifico solo para la creac
     password: string;
     email: string;
     role: UserRole;
+    storeName?: string;
 }
 
 export interface AuthenticateUserDTO { 

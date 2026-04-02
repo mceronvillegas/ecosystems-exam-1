@@ -66,7 +66,7 @@ export const createUserService = async (user: CreateUserDTO): Promise<AuthRespon
                     store_name: user.storeName, // Antes decía name
                     owner_id: newUserId,
                     status: 'closed',
-                    description: 'Descripción pendiente', 
+                    description: 'pending description', 
                 },
             ]);
 

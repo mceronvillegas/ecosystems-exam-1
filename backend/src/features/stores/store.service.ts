@@ -33,7 +33,7 @@ export const getStoreByOwnerIdService = async (ownerId: string): Promise<Store> 
     );
 
     if (dbRequest.rowCount === 0) {
-        throw Boom.notFound('Este usuario no tiene una tienda asociada');
+        throw Boom.notFound('This user does not have a store associated with them.');
     }
 
     return dbRequest.rows[0];
@@ -46,7 +46,7 @@ export const createStoreService = async (
 ): Promise<Store> => {
     // Si recuerdas, tu base de datos pide que description sea NOT NULL. 
     // Si no mandan una, se pone un texto por defecto.
-    const description = store.description || 'Descripción pendiente';
+    const description = store.description || 'pending description';
 
     const dbRequest = await pool.query(
         `INSERT INTO stores (store_name, description, status, owner_id) 

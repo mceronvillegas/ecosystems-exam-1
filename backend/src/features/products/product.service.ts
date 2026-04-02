@@ -69,7 +69,7 @@ export const deleteProductService = async (productId: number, storeId: number): 
 
     // pertenece a tienda?
     if (productFound.storeId !== storeId) {
-        throw Boom.forbidden('No puedes eliminar un producto que no pertenece a tu tienda');
+        throw Boom.forbidden('You cannot remove a product that does not belong in your store');
     }
 
     // 3. Si todo está biense borra

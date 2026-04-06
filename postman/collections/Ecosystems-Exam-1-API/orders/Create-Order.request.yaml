@@ -1,0 +1,23 @@
+$kind: http-request
+name: Create Order
+method: POST
+url: '{{baseUrl}}/api/orders'
+order: 3000
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "storeId": 1,
+      "address": "123 Main St",
+      "paymentMethod": "cash",
+      "orderDetail": "Extra napkins please",
+      "totalPrice": 19.98,
+      "products": [
+        { "productId": 1, "quantity": 2 }
+      ]
+    }

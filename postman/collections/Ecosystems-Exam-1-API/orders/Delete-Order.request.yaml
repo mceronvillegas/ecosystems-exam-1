@@ -1,0 +1,11 @@
+$kind: http-request
+name: Delete Order
+method: DELETE
+url: '{{baseUrl}}/api/orders/:id'
+order: 5000
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
+pathVariables:
+  - key: id
+    value: '1'

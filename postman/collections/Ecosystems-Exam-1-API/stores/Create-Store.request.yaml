@@ -1,0 +1,17 @@
+$kind: http-request
+name: Create Store
+method: POST
+url: '{{baseUrl}}/api/stores'
+order: 3000
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "storeName": "My Store",
+      "description": "A great store"
+    }

@@ -1,0 +1,21 @@
+$kind: http-request
+name: Update Store
+method: PATCH
+url: '{{baseUrl}}/api/stores/:id'
+order: 4000
+headers:
+  - key: Authorization
+    value: 'Bearer {{token}}'
+  - key: Content-Type
+    value: application/json
+pathVariables:
+  - key: id
+    value: '1'
+body:
+  type: json
+  content: |-
+    {
+      "storeName": "Updated Store Name",
+      "description": "Updated description",
+      "status": "open"
+    }

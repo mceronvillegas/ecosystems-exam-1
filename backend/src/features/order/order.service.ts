@@ -15,14 +15,14 @@ export const getOrdersService = async (
     const params: any[] = [];
 
     if (role === 'consumer') {
-        query += 'WHERE consumer_id = $1';
+        query += ' WHERE consumer_id = $1';
         params.push(userId);
     } else if (role === 'store') {
         query += ' WHERE store_id = (SELECT id FROM stores WHERE owner_id = $1 LIMIT 1)'
         params.push(userId);
     } else if (role === 'delivery') {
         // El repartidor ve las que aceptó la tienda o las que él ya tomó
-        query += "WHERE delivery_id = $1 OR status = 'accepted'";
+        query += " WHERE delivery_id = $1 OR status = 'accepted'";
         params.push(userId);
     } else {
         return [];
@@ -31,7 +31,7 @@ export const getOrdersService = async (
     //ID descendiente para ver las ordenes y q los mas nuevos queden de primeros
     query += ' ORDER BY id DESC';
 
-    const dbRequest = await pool.query(query,params);
+    const dbRequest = await pool.query(query, params);
     return dbRequest.rows;
 };
 

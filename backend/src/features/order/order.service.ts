@@ -29,7 +29,7 @@ export const getOrdersService = async (
     }
 
     //ID descendiente para ver las ordenes y q los mas nuevos queden de primeros
-    query += 'ORDER BY DESC';
+    query += ' ORDER BY id DESC';
 
     const dbRequest = await pool.query(query,params);
     return dbRequest.rows;

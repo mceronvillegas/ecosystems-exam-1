@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./index.css";
 
 // Importamos las vistas (tendremos que crear estos archivos)
-import Login from "./pages/Auth/Auth";
+import Auth from "./pages/Auth/Auth";
 import Consumer from "./pages/consumer/Consumer";
 import Store from "./pages/store/Store";
 import Delivery from "./pages/delivery/Delivery";
@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         {/* Redirigir la raíz directamente al login */}
-        <Route path="/" element={<Navigate to="/Auth" replace />} />
+        <Route path="/" element={<Navigate to="/auth" replace />} />
 
         <Route
           path="/consumer"
@@ -46,8 +46,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           }
         />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/auth" element={<Auth />} />
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

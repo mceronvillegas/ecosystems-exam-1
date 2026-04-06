@@ -1,2 +1,62 @@
 @import "tailwindcss";
 
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lexend+Deca:wght@100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+    --font-instrument: "Instrument Serif", serif;
+    --font-lexend: "Lexend Deca", sans-serif;
+    --color-blue: #446ff2;
+    --color-blue2: #4167d9;
+    --color-blue3: #8298d9;
+    --color-brown: #a69076;
+    --color-white: #f2f2f0;
+}
+
+h1 {
+    font-family: var(--font-instrument);
+}
+
+h2 {
+    font-family: var(--font-instrument);
+    font-style: italic;
+}
+
+h3 {
+    font-family: var(--font-lexend);
+}
+
+.receipt-container {
+    position: relative;
+    background-color: white;
+}
+
+.receipt-container::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -0px;
+    right: -0px;
+    height: 15px;
+    background-image:
+        linear-gradient(45deg, white 25%, transparent 25%),
+        linear-gradient(-45deg, white 25%, transparent 25%);
+    background-size: 16px 16px;
+    background-repeat: repeat-x;
+    z-index: 1;
+}
+
+.receipt-container::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: -0px;
+    right: -0px;
+    height: 15px;
+    background-image:
+        linear-gradient(135deg, white 25%, transparent 25%),
+        linear-gradient(-135deg, white 25%, transparent 25%);
+    background-size: 16px 16px;
+    background-repeat: repeat-x;
+    z-index: 1;
+}

@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lexend+Deca:wght@100..900&display=swap");
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lexend+Deca:wght@100..900&display=swap");
+
 
 @theme {
     --font-instrument: "Instrument Serif", serif;

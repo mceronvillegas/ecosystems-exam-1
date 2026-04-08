@@ -100,7 +100,7 @@ export default function Cart({
               type="text"
               required
               placeholder="Ej. Calle 123 #45-67"
-              value={address}
+              value="Salón 301"
               onChange={(e) => setAddress(e.target.value)}
               className="w-full border-2 border-blue p-2 font-lexend text-blue font-semibold outline-none placeholder:text-blue/30 text-sm"
             />
